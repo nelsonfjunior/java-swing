@@ -49,12 +49,27 @@ public class RevisaoProva extends javax.swing.JFrame {
         relatorioTable = new javax.swing.JTable();
 
         cadastrar.setText("Cadastrar");
+        cadastrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cadastrarBotaoActionPerformed(evt);
+            }
+        });
         menuPopUp.add(cadastrar);
 
         limpar.setText("Limpar");
+        limpar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                limparActionPerformed(evt);
+            }
+        });
         menuPopUp.add(limpar);
 
         editar.setText("Editar");
+        editar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editarActionPerformed(evt);
+            }
+        });
         menuPopUp.add(editar);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -220,6 +235,7 @@ public class RevisaoProva extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        relatorioTable.setComponentPopupMenu(menuPopUp);
         jScrollPane2.setViewportView(relatorioTable);
 
         javax.swing.GroupLayout panelPrincipalLayout = new javax.swing.GroupLayout(panelPrincipal);
@@ -364,8 +380,6 @@ public class RevisaoProva extends javax.swing.JFrame {
         DefaultTableModel tabela = (DefaultTableModel) relatorioTable.getModel();
         tabela.addRow(p.obterDados());
         
-        nomeText.setText("");
-        
         
     }//GEN-LAST:event_cadastrarBotaoActionPerformed
 
@@ -384,6 +398,53 @@ public class RevisaoProva extends javax.swing.JFrame {
     private void linuxRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_linuxRadioActionPerformed
         versaoCombo.setModel(new DefaultComboBoxModel<>(new String[]{"Ubuntu", "Fedora", "Red Hat", "Suse", "Debian"}));
     }//GEN-LAST:event_linuxRadioActionPerformed
+
+    private void limparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_limparActionPerformed
+        int linha = relatorioTable.getSelectedRow();
+        if(linha >= 0){
+            DefaultTableModel tabela = (DefaultTableModel) relatorioTable.getModel();
+            tabela.removeRow(linha);
+        }
+    }//GEN-LAST:event_limparActionPerformed
+
+    private void editarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarActionPerformed
+        
+        int linha = relatorioTable.getSelectedRow();
+
+        if (linha >= 0) {
+            String nome = (String) relatorioTable.getValueAt(linha, 0);
+            String cidade = (String) relatorioTable.getValueAt(linha, 1);
+            String sistema = (String) relatorioTable.getValueAt(linha, 2);
+            String versao = (String) relatorioTable.getValueAt(linha, 3);
+            String processador = (String) relatorioTable.getValueAt(linha, 4);
+            String hd = (String) relatorioTable.getValueAt(linha, 5);
+            String memoria = (String) relatorioTable.getValueAt(linha, 6);
+
+            nomeText.setText(nome);
+            cidadeCombo.setSelectedItem(cidade);
+            if (sistema.equals("Windows")) {
+                windowsRadio.setSelected(true);
+                versaoCombo.setModel(new DefaultComboBoxModel<>(new String[]{"Win8", "Win7", "XP", "2003 Server", "2008 Server"}));
+            } else if (sistema.equals("Linux")) {
+                linuxRadio.setSelected(true);
+                versaoCombo.setModel(new DefaultComboBoxModel<>(new String[]{"Ubuntu", "Fedora", "Red Hat", "Suse", "Debian"}));
+            }
+            versaoCombo.setSelectedItem(versao);
+            memoriaList.setSelectedValue(memoria, true);
+            if (processador.equals("Intel")) {
+                intelRadio.setSelected(true);
+            } else if (processador.equals("AMD")) {
+                amdRadio.setSelected(true);
+            }
+            if (hd.equals("320 GB")) {
+                check1.setSelected(true);
+            } else if (hd.equals("500 GB")) {
+                check2.setSelected(true);
+            } else if (hd.equals("1 TB")) {
+                check3.setSelected(true);
+            }
+        }
+    }//GEN-LAST:event_editarActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
