@@ -4,11 +4,14 @@
  */
 package revisaoprova;
 
+
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
 
 public class RevisaoProva extends javax.swing.JFrame {
-
+    
     public RevisaoProva() {
         initComponents();
     }
@@ -364,22 +367,28 @@ public class RevisaoProva extends javax.swing.JFrame {
             processador = "Indefinido";
         }
         
+        List<String> hdOptions = new ArrayList<>();
+        if (check1.isSelected()) {
+            hdOptions.add("320 GB");
+        }
+        if (check2.isSelected()) {
+            hdOptions.add("500 GB");
+        }
+        if (check3.isSelected()) {
+            hdOptions.add("1 TB");
+        }
         String hd;
-        if(check1.isSelected()){
-            hd = "320 GB";
-        }else if(check2.isSelected()){
-            hd = "500 GB";
-        }else if(check3.isSelected()){
-            hd = "1 TB";
-        }else{
+        if (!hdOptions.isEmpty()) {
+            // Se pelo menos uma opção foi selecionada, converte a lista em uma única string
+            hd = String.join(", ", hdOptions);
+        } else {
             hd = "Indefinido";
         }
         
-        Pessoa p = new Pessoa(nome, cidade, sistema, versao, memoria, processador, hd);
+        Pessoa p = new Pessoa(nome, cidade, sistema, versao, processador, hd, memoria);
         
         DefaultTableModel tabela = (DefaultTableModel) relatorioTable.getModel();
         tabela.addRow(p.obterDados());
-        
         
     }//GEN-LAST:event_cadastrarBotaoActionPerformed
 
@@ -436,13 +445,18 @@ public class RevisaoProva extends javax.swing.JFrame {
             } else if (processador.equals("AMD")) {
                 amdRadio.setSelected(true);
             }
-            if (hd.equals("320 GB")) {
-                check1.setSelected(true);
-            } else if (hd.equals("500 GB")) {
-                check2.setSelected(true);
-            } else if (hd.equals("1 TB")) {
-                check3.setSelected(true);
+            
+            String[] hdValues = hd.split(", ");
+            for (String hdValue : hdValues) {
+                if (hdValue.equals("320 GB")) {
+                    check1.setSelected(true);
+                } else if (hdValue.equals("500 GB")) {
+                    check2.setSelected(true);
+                } else if (hdValue.equals("1 TB")) {
+                    check3.setSelected(true);
+                }
             }
+            
         }
     }//GEN-LAST:event_editarActionPerformed
 
